@@ -18,7 +18,7 @@ I tried to comment every change that I did.
 
 ### Password Lock
 This password is not secure and can be easily bypassed, so don't rely on it. To configure password you need to change **auth-config.json** in editor: 
-'{
+`{
   "auth_enabled": false,
   "password": "secret"
-}'
+}`
