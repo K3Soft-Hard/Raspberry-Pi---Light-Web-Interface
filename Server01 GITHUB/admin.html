@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="UTF-8">
+    <script src="/auth.js"></script>
+
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root { --bg: #0a0a0a; --card: #161616; --blue: #0099ff; --red: #ff3333; --green: #00ff66; --text: #fff; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; padding: 20px; }
+        
+        .top-bar { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .btn { padding: 8px 15px; border-radius: 5px; cursor: pointer; border: none; font-weight: bold; text-decoration: none; color: white; font-size: 12px; }
+        .btn-back { background: #333; }
+        .btn-logout { background: #444; margin: 0 10px; }
+        .btn-power { background: var(--red); }
+
+        .dashboard { display: grid; grid-template-columns: 200px 1fr; gap: 20px; }
+        .card { background: var(--card); padding: 20px; border-radius: 10px; border: 1px solid #333; }
+        
+        /* Temperature Small Card */
+        .temp-card { text-align: center; display: flex; flex-direction: column; justify-content: center; }
+        .temp-val { font-size: 32px; font-weight: bold; color: var(--red); margin: 10px 0; }
+
+        /* Big Rectangle Section */
+        .main-rect { display: flex; flex-direction: column; gap: 20px; }
+        
+        .stat-row { margin-bottom: 15px; }
+        .bar-container { background: #000; height: 12px; border-radius: 6px; overflow: hidden; margin-top: 10px; border: 1px solid #333; }
+        .bar-fill { height: 100%; width: 0%; transition: width 0.5s; }
+        .disk-color { background: var(--blue); }
+        .mem-color { background: var(--green); }
+
+        .label-group { display: flex; justify-content: space-between; font-size: 13px; color: #888; }
+
+        .btn-back { 
+    background: #333; 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+}
+.btn-back:hover { background: #444; }
+
+.btn-logout { 
+    background: #0099ff; /* Blue color for logout */
+    margin-right: 10px; 
+}
+.btn-logout:hover { background: #007acc; }
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <a href="/" class="btn btn-back">
+        <i class="fas fa-chevron-left"></i> BACK
+    </a>
+
+    <div>
+         <button onclick="logoutPi()" class="btn btn-logout" title="Logout">
+             <i class="fa-solid fa-lock"></i> LOGOUT
+         </button>
+         
+         <button onclick="shutdown()" class="btn btn-power">
+             <i class="fas fa-power-off"></i> SHUTDOWN
+         </button>
+    </div>
+</div>
+
+<div class="dashboard">
+    <div class="card temp-card">
+        <i class="fas fa-thermometer-half" style="color:var(--red); font-size: 24px;"></i>
+        <div style="font-size: 12px; color:#888; margin-top:10px;">CORE TEMP</div>
+        <div id="temp-val" class="temp-val">--°C</div>
+    </div>
+
+    <div class="card main-rect">
+        <div class="stat-row">
+            <div class="label-group">
+                <span><i class="fas fa-hdd"></i> STORAGE (SD CARD)</span>
+                <span id="disk-text">0% USED</span>
+            </div>
+            <div class="bar-container">
+                <div id="disk-bar" class="bar-fill disk-color"></div>
+            </div>
+        </div>
+
+        <div class="stat-row">
+            <div class="label-group">
+                <span><i class="fas fa-memory"></i> MEMORY (RAM)</span>
+                <span id="mem-text">0% USED</span>
+            </div>
+            <div class="bar-container">
+                <div id="mem-bar" class="bar-fill mem-color"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+    <div class="card">
+    <h3><i class="fas fa-plus-circle"></i> Install New Plugin</h3>
+    <div id="drop-zone" style="border: 2px dashed #444; padding: 30px; border-radius: 10px; text-align: center;">
+        <i class="fas fa-file-zipper" style="font-size: 30px; color: #0099ff;"></i>
+        <p>Put <strong>Plugin</strong> to plugin folder</p>
+    </div>
+</div>
+<br>
+<br>
+<style>
+    .admin-card { background: #1a1a1a; padding: 20px; border-radius: 8px; border: 1px solid #333; }
+    .plugin-row { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        padding: 10px 0; 
+        border-bottom: 1px solid #222; 
+    }
+    /* Simple Toggle Switch CSS */
+    .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { 
+        position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; 
+        background-color: #444; transition: .4s; border-radius: 20px; 
+    }
+    input:checked + .slider { background-color: #0099ff; }
+    .slider:before { 
+        position: absolute; content: ""; height: 14px; width: 14px; 
+        left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; 
+    }
+    input:checked + .slider:before { transform: translateX(20px); }
+</style>
+
+<div class="admin-card">
+    <h3>Top Bar Plugin Manager</h3>
+    <div id="plugin-manager-list">
+        </div>
+</div>
+
+<script>
+
+async function loadManager() {
+    // 1. MUST fetch from /api/all_plugins to see the hidden ones!
+    const res = await fetch('/api/all_plugins'); 
+    const plugins = await res.json();
+    const container = document.getElementById('plugin-manager-list');
+    
+    container.innerHTML = plugins.map(p => `
+        <div class="plugin-row">
+            <span><i class="fas fa-${p.icon}"></i> ${p.name}</span>
+            <label class="switch">
+                <input type="checkbox" 
+                       ${p.isHidden ? '' : 'checked'} 
+                       onchange="togglePlugin('${p.folder}')">
+                <span class="slider"></span>
+            </label>
+        </div>
+    `).join('');
+}
+
+async function togglePlugin(folder) {
+    await fetch('/api/toggle_plugin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ folder: folder })
+    });
+    
+    // Refresh the list so the switches stay synced
+    loadManager(); 
+}
+    
+    loadManager();
+
+    function togglePlugin(folderName) {
+    fetch('/api/toggle_plugin', {
+        method: 'POST',
+        body: JSON.stringify({ folder: folderName })
+    });
+}
+</script>
+
+<script>
+    function refreshAdminList() {
+        var x = new XMLHttpRequest();
+        x.open("GET", "/api/plugins", true);
+        x.onload = function() {
+            var plugins = JSON.parse(x.responseText);
+            var list = document.getElementById('admin-list');
+            list.innerHTML = "";
+
+            plugins.forEach(p => {
+                var item = document.createElement('div');
+                item.style = "display:flex; justify-content:space-between; align-items:center; padding:10px; background:#000; margin-bottom:5px; border-radius:5px;";
+                item.innerHTML = `
+                    <span>${p.name} <small style="color:#555">(${p.folder})</small></span>
+                    <button onclick="hidePlugin('${p.folder}')" style="background:#444; color:#ff3333; border:1px solid #ff3333; padding:5px 10px; cursor:pointer; border-radius:3px;">
+                        <i class="fas fa-eye-slash"></i> Remove Path
+                    </button>
+                `;
+                list.appendChild(item);
+            });
+        };
+        x.send();
+    }
+
+    function hidePlugin(folderName) {
+        if(!confirm("Hide this button from the top bar?")) return;
+        var x = new XMLHttpRequest();
+        x.open("POST", "/api/remove_plugin", true);
+        x.onload = refreshAdminList;
+        x.send(JSON.stringify({folder: folderName}));
+    }
+
+    refreshAdminList();
+</script>
+<script>
+async function updateStats() {
+    try {
+        const res = await fetch('/api/stats');
+        const data = await res.json();
+        
+        console.log("Stats update:", data);
+
+        // 1. Update Temperature
+        const tempEl = document.getElementById('temp-val');
+        if (tempEl) tempEl.innerText = data.temp + "°C";
+
+        // 2. Update Disk (Text and Bar)
+        const diskText = document.getElementById('disk-text');
+        const diskBar = document.getElementById('disk-bar');
+        if (diskText) diskText.innerText = data.disk + "% USED";
+        if (diskBar)  diskBar.style.width = data.disk + "%";
+
+        // 3. Update Memory (Text and Bar)
+        const memText = document.getElementById('mem-text');
+        const memBar = document.getElementById('mem-bar');
+        if (memText) memText.innerText = data.mem + "% USED";
+        if (memBar)  memBar.style.width = data.mem + "%";
+
+    } catch (err) {
+        console.error("Stats UI update failed", err);
+    }
+}
+
+// Start it immediately
+updateStats();
+setInterval(updateStats, 5000);
+</script>
+
+</body>
+</html>

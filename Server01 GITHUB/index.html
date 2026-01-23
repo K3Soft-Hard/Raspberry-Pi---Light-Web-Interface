@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RP5a WebServer</title>
+    <script src="/auth.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --blue: #0099ff; --red: #ff3333; --green: #00ff66; }
+        
+        body { 
+            margin: 0; 
+            padding: 0; 
+            height: 100vh; 
+            background: url('background.png') no-repeat center center fixed; 
+            background-size: cover; 
+            font-family: 'Segoe UI', sans-serif; 
+            color: white; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden;
+        }
+
+        /* ONE SINGLE TOP BAR - NO PI OS TEXT */
+        .plugin-header {
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            background: rgba(0, 0, 0, 0.85);
+            height: 60px;
+            width: 100%;
+            border-bottom: 2px solid #333;
+            gap: 15px;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        /* Modern Capsule Buttons for Plugins */
+        .nav-item {
+            color: var(--blue);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 10px 25px !important;
+            background: #1a1a1a;
+            border: 1px solid #444;
+            border-radius: 55px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-item:hover {
+            background: var(--blue);
+            color: #fff;
+            border-color: var(--blue);
+            box-shadow: 0 0 15px rgba(0, 153, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* Layout Container */
+        .main-container {
+            display: flex;
+            height: calc(100vh - 60px);
+        }
+
+.side-panel { 
+    width: 280px; 
+    background: rgba(15, 15, 15, 0.9); 
+    border-right: 2px solid #333; 
+    display: flex; 
+    flex-direction: column; 
+    padding: 20px; 
+    box-sizing: border-box; 
+    
+    /* FIXES START HERE */
+    height: calc(100vh - 50px); /* Total height minus header height */
+    margin-top: 50px;           /* Pushes it down so it doesn't hide behind the bar */
+    
+    backdrop-filter: blur(10px); 
+}
+
+        h2 { font-size: 11px; color: #888; letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase; }
+
+        .menu-items { flex-grow: 1; overflow-y: auto; }
+
+        .menu-button { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px;
+            padding: 14px; 
+            background: rgba(255,255,255,0.05); 
+            color: white; 
+            text-decoration: none; 
+            border-radius: 6px; 
+            margin-bottom: 10px; 
+            border: 1px solid #444; 
+            font-weight: bold; 
+            transition: 0.3s; 
+        }
+
+        .menu-button:hover { 
+            border-color: var(--blue); 
+            background: rgba(0, 153, 255, 0.2); 
+            box-shadow: 0 0 15px rgba(0, 153, 255, 0.4);
+        }
+
+        .custom-item { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+        .custom-item .menu-button { flex-grow: 1; margin-bottom: 0; background: rgba(0,0,0,0.3); border-style: dashed; }
+        .del-site { color: #555; cursor: pointer; padding: 10px; transition: 0.2s; }
+        .del-site:hover { color: var(--red); transform: scale(1.2); }
+
+        /* Bottom Action Buttons */
+        .bottom-actions { display: flex; justify-content: flex-end; gap: 12px; padding-top: 20px; border-top: 1px solid #333; }
+        .action-btn { background: #222; color: white; border: 1px solid #444; width: 45px; height: 45px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: 0.3s; }
+        
+        .btn-lock:hover { border-color: #ffee00; color: #ffee00; box-shadow: 0 0 15px rgba(255, 238, 0, 0.5); }
+        .btn-add:hover { border-color: var(--green); color: var(--green); box-shadow: 0 0 15px rgba(0, 255, 102, 0.5); }
+        .btn-shutdown:hover { border-color: var(--red); color: var(--red); box-shadow: 0 0 15px rgba(255, 51, 51, 0.5); }
+    
+.plugin-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(10, 10, 10, 0.7); /* Transparent black */
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px); 
+    height: 52px; /* Slimmer height */
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0 20px;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+/* THE SLIM YELLOW TITLE */
+.pi-name { 
+    font-size: 20px; /* Reduced from 28px */
+    font-weight: 900; 
+    letter-spacing: 1.5px; 
+    color: #ffee00; 
+    text-shadow: 0 0 10px rgba(255, 238, 0, 0.3);
+    white-space: nowrap;
+}
+
+.header-left { flex: 1; }
+.header-center { flex: 2; display: flex; justify-content: center; gap: 10px; }
+.header-right { flex: 1; }
+
+/* COMPACT BUTTONS */
+.nav-item {
+    color: #fff;
+    text-decoration: none;
+    font-size: 12px; /* Smaller font */
+    font-weight: 600;
+    padding: 5px 15px; /* Tighter padding */
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px; /* Squared off slightly for a modern look */
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nav-item:hover {
+    background: #0099ff;
+    border-color: #0099ff;
+    transform: translateY(-1px);
+}
+    </style>
+</head>
+<body>
+<header class="plugin-header">
+    <div class="header-left">
+        <div class="pi-name">PI DASHBOARD</div>
+    </div>
+
+    <div id="plugin-bar" class="header-center">
+        </div>
+
+    <div class="header-right"></div>
+</header>
+
+    <div class="main-container">
+        <nav class="side-panel">
+            
+            <h2>APPLICATIONS</h2>
+            <div class="menu-items">
+                <a href="/editor.html" class="menu-button"><i class="fa-solid fa-code"></i> Pi Editor</a>
+                <a href="/video/video.html" class="menu-button"><i class="fa-solid fa-video"></i> Video Player</a>
+                <a href="/photo/photo.html" class="menu-button"><i class="fa-solid fa-image"></i> Photo Viewer</a>
+                <a href="/music/music.html" class="menu-button"><i class="fa-solid fa-music"></i> Music Player</a>
+                <a href="/admin.html" class="menu-button"><i class="fa-solid fa-gears"></i> Admin Panel</a>
+                <div id="sharedSites"></div>
+            </div>
+
+            <div class="bottom-actions">
+                <button class="action-btn btn-lock" title="Logout" onclick="logoutPi()">
+                    <i class="fa-solid fa-lock"></i>
+                </button>
+                <button class="action-btn btn-add" title="Add Link" onclick="addSite()">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+                <button class="action-btn btn-shutdown" title="Shutdown" onclick="shutdownPi()">
+                    <i class="fa-solid fa-power-off"></i>
+                </button>
+            </div>
+        </nav>
+
+        <main style="flex-grow: 1; padding: 40px;">
+            </main>
+    </div>
+
+    <script>
+        async function loadPlugins() {
+    try {
+        const res = await fetch('/api/plugins');
+        const data = await res.json();
+        const bar = document.getElementById('plugin-bar');
+        if (!bar) return;
+        
+        bar.innerHTML = ""; 
+        data.forEach(p => {
+            const link = document.createElement('a');
+            link.href = p.path;
+            link.className = 'nav-item';
+            
+            // This part chooses the icon:
+            // It uses p.icon if it exists, otherwise it defaults to 'plug'
+            const iconName = p.icon ? p.icon : 'plug';
+            
+            link.innerHTML = `<i class="fas fa-${iconName}"></i> ${p.name}`;
+            bar.appendChild(link);
+        });
+    } catch (err) {
+        console.error("Plugins not found");
+    }
+}
+
+        // 2. Shutdown Function
+        async function shutdownPi() {
+            if(confirm("Shutdown Raspberry Pi?")) {
+                await fetch('/api/shutdown', {method: 'POST'});
+                alert("Shutdown command sent.");
+            }
+        }
+
+        // 3. Shared Links Logic
+        let sharedLinks = [];
+        async function loadLinks() {
+            try {
+                const res = await fetch('/api/get_links');
+                sharedLinks = await res.json();
+                render();
+            } catch (e) { }
+        }
+
+        async function saveLinks() {
+            await fetch('/api/save_links', { method: 'POST', body: JSON.stringify(sharedLinks) });
+            render();
+        }
+
+        function addSite() {
+            const name = prompt("Site Name:");
+            const path = prompt("Path:");
+            if (name && path) { sharedLinks.push({ id: Date.now(), name, path }); saveLinks(); }
+        }
+
+        function deleteSite(id) {
+            if (confirm("Delete this link?")) { sharedLinks = sharedLinks.filter(s => s.id !== id); saveLinks(); }
+        }
+
+        function render() {
+            const container = document.getElementById('sharedSites');
+            container.innerHTML = sharedLinks.map(site => `
+                <div class="custom-item">
+                    <a href="${site.path}" class="menu-button">${site.name}</a>
+                    <span class="del-site" onclick="deleteSite(${site.id})"><i class="fa-solid fa-trash-can"></i></span>
+                </div>
+            `).join('');
+        }
+
+        // Start everything on load
+        document.addEventListener("DOMContentLoaded", () => {
+            loadPlugins();
+            loadLinks();
+        });
+    </script>
+</body>
+</html>

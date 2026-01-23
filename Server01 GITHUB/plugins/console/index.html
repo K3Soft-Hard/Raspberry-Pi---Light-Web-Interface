@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <script src="/auth.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pi Web Terminal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #0d0d0d;
+            --term-bg: #000000;
+            --text-color: #00ff41; /* Terminal Green */
+            --prompt-color: #00a2ff; /* User Blue */
+            --border-color: #333;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: #fff;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .terminal-window {
+            background-color: var(--term-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            overflow: hidden;
+        }
+
+        #output {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text-color);
+        }
+
+        .input-area {
+            display: flex;
+            background: #111;
+            padding: 12px 20px;
+            border-top: 1px solid var(--border-color);
+            align-items: center;
+        }
+
+        .prompt {
+            color: var(--prompt-color);
+            font-weight: bold;
+            margin-right: 10px;
+            white-space: nowrap;
+        }
+
+        #cmd-input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            width: 100%;
+        }
+
+        /* Scrollbar Styling */
+        #output::-webkit-scrollbar { width: 8px; }
+        #output::-webkit-scrollbar-track { background: #000; }
+        #output::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div style="font-size: 18px; font-weight: bold;">
+            <i class="fas fa-terminal"></i> BASH TERMINAL
+        </div>
+        <div style="font-size: 12px; color: #666;">
+            Connected as: <span style="color: var(--text-color);">Pi-User</span>
+        </div>
+    </div>
+
+    <div class="terminal-window" onclick="focusInput()">
+        <div id="output">Welcome to the Pi Web Terminal.
+Type 'ls' or any linux command to begin.
+--------------------------------------------------</div>
+        
+        <div class="input-area">
+            <span class="prompt">pi@raspberry:~ $</span>
+            <input type="text" id="cmd-input" autofocus autocomplete="off" spellcheck="false">
+        </div>
+    </div>
+
+    <script>
+        const input = document.getElementById('cmd-input');
+        const output = document.getElementById('output');
+
+        // Automatically focus input when clicking anywhere in the terminal
+        function focusInput() {
+            input.focus();
+        }
+
+        input.addEventListener('keydown', async function(e) {
+            if (e.key === 'Enter') {
+                const command = input.value.trim();
+                
+                if (command === '') return;
+                if (command === 'clear') {
+                    output.innerHTML = 'Terminal Cleared.';
+                    input.value = '';
+                    return;
+                }
+
+                // Append the typed command to output
+                output.innerHTML += `\n<span style="color: #fff;">$ ${command}</span>\n`;
+                
+                // Clear input
+                input.value = '';
+
+                try {
+                    // Send command to your Python backend
+                   const response = await fetch('/terminal/api', { 
+                    method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ command: command })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Server returned an error');
+                    }
+
+                    const result = await response.text();
+                    
+                    // Display response
+                    output.innerHTML += result + '\n';
+                } catch (error) {
+                    output.innerHTML += `<span style="color: #ff3333;">Error: ${error.message}</span>\n`;
+                }
+
+                // Scroll to bottom
+                output.scrollTop = output.scrollHeight;
+            }
+        });
+    </script>
+</body>
+</html>

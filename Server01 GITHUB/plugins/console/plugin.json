@@ -1,0 +1,5 @@
+{
+    "name": "Terminal (beta)",
+    "icon": "terminal",
+    "path": "plugins/console/index.html"
+}

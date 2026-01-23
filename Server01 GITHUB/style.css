@@ -1,0 +1,112 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    /* ADD YOUR BACKGROUND IMAGE HERE */
+    background: url('background.png') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Top Bar Styling */
+.top-bar {
+    width: 100%;
+    height: 60px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px); /* Blurs the background behind the bar */
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Right Side Panel */
+.side-panel {
+    position: absolute;
+    right: 0;
+    top: 60px; /* Starts below the top bar */
+    bottom: 0;
+    width: 300px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(15px);
+    display: flex;
+    flex-direction: column;
+    padding: 40px 20px;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+    color: white;
+}
+
+.side-panel h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 300;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 10px;
+}
+
+/* Menu Button Container */
+.menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Button & Animation */
+.menu-button {
+    text-decoration: none;
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    
+    /* Smooth Transition for the animation */
+    transition: all 0.3s ease-in-out;
+}
+
+/* The "Selected/Hover" Animation */
+.menu-button:hover {
+    background: #3498db;
+    transform: translateX(-10px); /* Moves the button slightly left toward the center */
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+    font-weight: bold;
+}
+
+/* This targets the link in every possible state */
+a, a:link, a:visited, a:hover, a:active {
+    color: white !important;
+    text-decoration: none; /* Optional: removes the underline */
+}
+
+/* --- Bottom Buttons Neon Glow Effects --- */
+
+/* Lock Button (Yellow) */
+.btn-lock:hover { 
+    border-color: #ffee00; 
+    color: #ffee00;
+    box-shadow: 0 0 15px rgba(255, 238, 0, 0.6), inset 0 0 5px rgba(255, 238, 0, 0.2);
+    text-shadow: 0 0 8px rgba(255, 238, 0, 0.6);
+}
+
+/* Add Button (Green) */
+.btn-add:hover { 
+    border-color: var(--green); 
+    color: var(--green); 
+    box-shadow: 0 0 15px rgba(0, 255, 102, 0.6), inset 0 0 5px rgba(0, 255, 102, 0.2);
+    text-shadow: 0 0 8px rgba(0, 255, 102, 0.6);
+}
+
+/* Shutdown Button (Red) */
+.btn-shutdown:hover { 
+    border-color: var(--red); 
+    color: var(--red); 
+    box-shadow: 0 0 15px rgba(255, 51, 51, 0.6), inset 0 0 5px rgba(255, 51, 51, 0.2);
+    text-shadow: 0 0 8px rgba(255, 51, 51, 0.6);
+}
