@@ -1,9 +1,9 @@
 # Rasberry-Pi Light Web Interface
 It has a lot of bugs that I want to fix in the future.
 The code is very messy. Feel free to download it and change the code.
-I tried to comment every change that I did.
-### This is a small web interface with built-in:
-  - Editor from HTML, SCRIPTS, PYTHON and JSON
+I tried to comment every change that I did. This is a small web interface with built-in features.
+### Main features:
+  - [Editor from HTML, SCRIPTS, PYTHON and JSON](#pi-editor)
   - Admin panel with temperature, storage and memory
   - Music Player
   - Video Player
