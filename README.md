@@ -58,7 +58,7 @@ To search inside your videos press search button. To select video to play click 
 In admin panel you can see Temperature, Memory, Storage and manage all installed [plugins](#plugins) (enable or disable them).
 - "BACK" button will go to home screen
 - "SHUTDOWN" will stop server and shutdown
-- "LOCK" will logout user
+- "LOGOUT" will logout user
 
 ## Other features Info:
 ### Web Terminal (Beta)
