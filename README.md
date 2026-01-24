@@ -21,11 +21,11 @@ I tried to comment every change that I did.
 ![Pi Edutor](editor.jpg)
 Delete and rename button doesn't work at this time, but i want to add them in next updates.
 I will also want to add "Upload" button to mkve files directly from your computer to Rasberry Pi
--"RUN" button is to run scripts
--"SCAN" is to scan for new file, but its better to reload page
--"SAVE" is for saving current file
--"New Documnt" is for creating documents
--You can search your files or filter them.
+- "RUN" button is to run scripts
+- "SCAN" is to scan for new file, but its better to reload page
+- "SAVE" is for saving current file
+- "New Documnt" is for creating documents
+- You can search your files or filter them.
 
 ### Web Terminal (Beta)
 ![Web Terminal](Terminal.jpg)
