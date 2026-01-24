@@ -16,6 +16,8 @@ I tried to comment every change that I did.
   - [Option to host site on local network](#local-site-hosting)
   - [Password lock for UI](#password-lock)
 
+### Web Terminal
+![Web Terminal](terminal.png)
 ### Local site hosting
 Open editor and click "New Document" enter name of your document.html. Now you can make your code and then click "SAVE" and exit editor. On main screen press "+" in bottom bar and enter name of your shortcut and path to your site (ex. document.html). Now when you click that shortcut your site will open. You can delete shortcut by clicking trash icon next to your shortcut
 
