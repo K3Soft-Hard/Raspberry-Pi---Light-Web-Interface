@@ -28,3 +28,16 @@ This password is not secure and can be easily bypassed, so don't rely on it. To 
 
 ### Install plugins
 To install plugin put unzipped folder with your plugin to **Plugins** folder. To unnistal plugin delete your folder with plugin ==inside **Plugins**== folder. To enable or disable plugin, open Admin Panel, scroll down to plugin manager and disable or enable selected plugin using toggle button
+
+## Instalation guide
+1. Clone this repository
+     Open this link or use `git clone`
+2. Unzip it
+     If this repository is zipped after download, then unzip it
+3. Go to folder **Pi Server GITHUB**
+4. Make sure you have installed python
+     If you don't already installed python, then download it
+5. It's recomended to run `chmod +x *`
+6. Run server
+     Use `./start.sh` or just double click it in File Explorer and press "Execute in Terminal"
+7. Setup everything how you want and you can even change the code if you want
