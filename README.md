@@ -30,8 +30,15 @@ I will also want to add "Upload" button to mkve files directly from your compute
 
 ### Photo Viewer
 ![Photo Viewer](photo.jpg)
-You can see all files in **Photo** folder inside **Pi Server GITHUB**.
+You can see all files in **photo** folder inside **Pi Server GITHUB**.
 To search inside your photos press search button. To select image click on it in right sidebar.
+
+### Admin Panel
+![Admin Panel](admin.png)
+In admin panel you can see Temperature, Memory, Storage and manage all installed plugins (enable or disable them).
+- "BACK" button will go to home screen
+- "SHUTDOWN" will stop server and shutdown
+- "LOCK" will logout user
 
 ## Other features Info:
 ### Web Terminal (Beta)
