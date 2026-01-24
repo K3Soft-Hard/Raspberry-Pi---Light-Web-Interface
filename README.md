@@ -18,7 +18,7 @@ I tried to comment every change that I did.
 
 ### Main Players/Editors
 #### Pi Editor
-![Pi Edutor](editor.jpg)
+![Pi Editor](editor.jpg)
 Delete and rename button doesn't work at this time, but i want to add them in next updates.
 I will also want to add "Upload" button to mkve files directly from your computer to Rasberry Pi
 - "RUN" button is to run scripts
