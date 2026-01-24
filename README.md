@@ -16,8 +16,20 @@ I tried to comment every change that I did.
   - [Option to host site on local network](#local-site-hosting)
   - [Password lock for UI](#password-lock)
 
-### Web Terminal
+### Main Players/Editors
+#### Pi Editor
+![Pi Edutor](editor.jpg)
+Delete and rename button doesn't work, but i want to add them in next updates.
+"RUN" button is to run .sh
+"SCAN" is to scan for new file, but its better to reload page
+"SAVE" is for saving current file
+"New Documnt" is for creating documents
+You can search your files or filter them.
+
+### Web Terminal (Beta)
 ![Web Terminal](Terminal.jpg)
+You can disable Web Terminal in plugin manager. Web Terminal works but it has one problem. The path to file/folder is alway resetingafter every command, so if you want to go to test folder and show all files in it you need to run this for an example:
+`cd test && ls`
 
 ### Local site hosting
 Open editor and click "New Document" enter name of your document.html. Now you can make your code and then click "SAVE" and exit editor. On main screen press "+" in bottom bar and enter name of your shortcut and path to your site (ex. document.html). Now when you click that shortcut your site will open. You can delete shortcut by clicking trash icon next to your shortcut
