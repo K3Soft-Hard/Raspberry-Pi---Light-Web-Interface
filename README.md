@@ -12,7 +12,7 @@ I tried to comment every change that I did. This is a small web interface with b
   - [Home screen](#home-screen)
 
 ## Other features list:
-  - [Web Terminal (beta)](#web-terminal-(beta))
+  - [Web Terminal (beta)](#web-terminal-beta)
   - [Option to host site on local network](#local-site-hosting)
   - [Password lock for UI](#password-lock)
 
