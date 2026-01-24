@@ -4,17 +4,27 @@ The code is very messy. Feel free to download it and change the code.
 I tried to comment every change that I did. This is a small web interface with built-in features.
 ## Main features list:
   - [Editor from HTML, SCRIPTS, PYTHON and JSON](#pi-editor)
-  - Admin panel with temperature, storage and memory
-  - Music Player
-  - Video Player
+  - [Music Player](#music-player)
+  - [Video Player](#video-player)
   - [Photo Viewer](#pi-editor)
-  - Plugin manager for installing plugins
-  - Home screen
+  - [Plugin manager for installing plugins](#plugins)
+  - [Admin panel with temperature, storage and memory](#admin-panel)
+  - [Home screen](#home-screen)
 
 ## Other features list:
-  - Web Terminal (beta)
+  - [Web Terminal (beta)](#Web-Terminal-(Beta))
   - [Option to host site on local network](#local-site-hosting)
   - [Password lock for UI](#password-lock)
+
+## Home screen
+![Home Screen](home.png)
+To change background rename your image that you want to use to **background.png** and ovewrite the first background.
+You can set [password](#password-lock) for homescreen, main pages and some plugins.
+ - "+" When you press plus icon, enter name of your page you want to save and path to it to create shortcut. To remove shortcut press delete icon next to your shortcut. [Add your page using shortcut](#local-site-hosting)
+ - "Lock icon" will logout user
+ - "Shutdown" will stop server and shutdown
+ - Use top bar to open plugins
+ - In left bar are all main features
 
 ## Main Features Info:
 ### Pi Editor
@@ -28,14 +38,24 @@ I will also want to add "Upload" button to mkve files directly from your compute
 - "New Documnt" is for creating documents
 - You can search your files or filter them.
 
+### Music Player
+You can see all files in **music** folder inside **Pi Server GITHUB**
+At the first left sidebar you can see folders inside **music** folder.
+To see all songs press "All songs" button. You can add cover by adding **cover.png** to **music** folder or you can add differnt cover for every of your albums by adding **cover.png** to your folders inside **music**
+
 ### Photo Viewer
 ![Photo Viewer](photo.jpg)
 You can see all files in **photo** folder inside **Pi Server GITHUB**.
 To search inside your photos press search button. To select image click on it in right sidebar.
 
+### Video Player
+You can see all files in **video** folder inside **Pi Server GITHUB**.
+It's very similar to [Photo Viewer](#photo-viewer)
+To search inside your videos press search button. To select video to play click on it in right sidebar.
+
 ### Admin Panel
 ![Admin Panel](admin.png)
-In admin panel you can see Temperature, Memory, Storage and manage all installed plugins (enable or disable them).
+In admin panel you can see Temperature, Memory, Storage and manage all installed [plugins](#plugins) (enable or disable them).
 - "BACK" button will go to home screen
 - "SHUTDOWN" will stop server and shutdown
 - "LOCK" will logout user
@@ -60,7 +80,7 @@ This password is not secure and can be easily bypassed, so don't rely on it. To 
 }
 ```
 
-## Install plugins
+## Plugins
 To install plugin put unzipped folder with your plugin to **Plugins** folder. To unnistal plugin delete your folder with plugin inside **Plugins** folder. To enable or disable plugin, open Admin Panel, scroll down to plugin manager and disable or enable selected plugin using toggle button
 
 ## Instalation guide
