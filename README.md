@@ -40,4 +40,4 @@ To install plugin put unzipped folder with your plugin to **Plugins** folder. To
 5. It's recomended to run `chmod +x *` <br>
 6. Run server <br>
      Use `./start.sh` or just double click it in File Explorer and press "Execute in Terminal"
-7. Setup everything how you want and you can <br> even change the code if you want
+7. Setup everything how you want and you can even change the code if you want
