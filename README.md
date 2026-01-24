@@ -31,7 +31,7 @@ To install plugin put unzipped folder with your plugin to **Plugins** folder. To
 
 ## Instalation guide
 1. Clone this repository <br>
-     Open this [link](https://github.com/K3Soft-Hard/Rasberry-Pi---Light-Web-Interface/archive/refs/heads/main.zip) or use `git clone `
+     Open this [link](https://github.com/K3Soft-Hard/Rasberry-Pi---Light-Web-Interface/archive/refs/heads/main.zip) or use `git clone https://github.com/K3Soft-Hard/Rasberry-Pi---Light-Web-Interface`
 2. Unzip it <br>
      If this repository is zipped after download, then unzip it
 3. Go to folder **Pi Server GITHUB** <br>
