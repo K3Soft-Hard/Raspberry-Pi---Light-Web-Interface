@@ -13,7 +13,7 @@ I tried to comment every change that I did.
 
 ### Other features:
   - Web Terminal (beta)
-  - Option to [host site on local network](#local-site-hosting)
+  - [Option to host site on local network](#local-site-hosting)
   - [Password lock for UI](#password-lock)
 
 ### Local site hosting
