@@ -27,7 +27,7 @@ This password is not secure and can be easily bypassed, so don't rely on it. To 
 }`
 
 ### Install plugins
-To install plugin put unzipped folder with your plugin to **Plugins** folder. To unnistal plugin delete your folder with plugin ==inside **Plugins**== folder. To enable or disable plugin, open Admin Panel, scroll down to plugin manager and disable or enable selected plugin using toggle button
+To install plugin put unzipped folder with your plugin to **Plugins** folder. To unnistal plugin delete your folder with plugin ==inside **Plugins** folder==. To enable or disable plugin, open Admin Panel, scroll down to plugin manager and disable or enable selected plugin using toggle button
 
 ## Instalation guide
 1. Clone this repository <br>
