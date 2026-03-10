@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os, json, subprocess, time
 from http.server import HTTPServer, SimpleHTTPRequestHandler
+import datetime
 
 HIDDEN_FILE = 'hidden_plugins.json'
 LINKS_FILE = 'sidebar_links.json'
@@ -92,6 +93,25 @@ class MasterHandler(SimpleHTTPRequestHandler):
             else:
                 self.wfile.write(b"[]")
             return
+        
+        elif self.path == '/transfer':
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            with open('transfer.html', 'rb') as f:
+                self.wfile.write(f.read())
+            return
+        
+        elif self.path == '/api/upload_history':
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            if os.path.exists('upload_history.json'):
+                with open('upload_history.json', 'rb') as f:
+                    self.wfile.write(f.read())
+            else:
+                self.wfile.write(b"[]")
+            return
 
         # 4. HOME REDIRECT
         elif self.path == '/':
@@ -103,6 +123,70 @@ class MasterHandler(SimpleHTTPRequestHandler):
         return super().do_GET()
 
     def do_POST(self):
+        
+        content_length = int(self.headers.get('Content-Length', 0))
+
+        if self.path == '/api/upload':
+                    try:
+                        content_length = int(self.headers.get('Content-Length', 0))
+                        filename = self.headers.get('X-File-Name', 'unnamed_file')
+                        folder_choice = self.headers.get('X-Folder', 'Main')
+                        
+                        print(f"--- Uploading: {filename} to {folder_choice} ---")
+
+                        # Define absolute path to be safe
+                        base_dir = './'
+                        
+                        paths = {
+                            "Main": base_dir,
+                            "Plugins": os.path.join(base_dir, "plugins"),
+                            "Video": os.path.join(base_dir, "video"),
+                            "Photo": os.path.join(base_dir, "photo"),
+                            "Music": os.path.join(base_dir, "music")
+                        }
+                        
+                        target_path = paths.get(folder_choice, base_dir)
+
+                        # Create folder if missing
+                        if not os.path.exists(target_path):
+                            print(f"Creating folder: {target_path}")
+                            os.makedirs(target_path, exist_ok=True)
+
+                        save_file_path = os.path.join(target_path, filename)
+
+                        # READ BINARY DATA
+                        file_data = self.rfile.read(content_length)
+                        
+                        with open(save_file_path, 'wb') as f:
+                            f.write(file_data)
+                        
+                        print(f"Successfully saved to: {save_file_path}")
+
+                        # History logic (simplified to prevent errors)
+                        try:
+                            import datetime
+                            history_file = os.path.join(base_dir, 'upload_history.json')
+                            history = []
+                            if os.path.exists(history_file):
+                                with open(history_file, 'r') as f:
+                                    history = json.load(f)
+                            history.insert(0, {"name": filename, "date": datetime.datetime.now().strftime("%H:%M:%S"), "folder": folder_choice})
+                            with open(history_file, 'w') as f:
+                                json.dump(history[:10], f)
+                        except Exception as e:
+                            print(f"History Error: {e}")
+
+                        self.send_response(200)
+                        self.end_headers()
+                        self.wfile.write(b'{"status":"success"}')
+                        return
+
+                    except Exception as e:
+                        print(f"FATAL UPLOAD ERROR: {e}")
+                        self.send_response(500)
+                        self.end_headers()
+                        return
+        
         # READ DATA ONCE (Crucial: reading twice crashes the server)
         length = int(self.headers.get('Content-Length', 0))
         body = self.rfile.read(length).decode('utf-8')
