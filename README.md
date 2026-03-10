@@ -92,7 +92,7 @@ For transferring files from your mobile, laptop or other devices open Raspberry 
 
 ## Plugins
 To install plugin put unzipped folder with your plugin to **Plugins** folder. To unnistall plugin delete your folder with plugin inside **Plugins** folder. To enable or disable plugin, open Admin Panel, scroll down to plugin manager and disable or enable selected plugin using toggle button.
-More about creating custom plugins here: [Creating plugins].
+More about creating custom plugins here: [Creating plugins](https://github.com/K3Soft-Hard/Raspberry-Pi---Light-Web-Interface/blob/main/Creating%20Plugins.md).
 **Check out [Plugin Store](https://k3soft-hard.github.io/Rasberry-Pi---Web-Interface-STORE/)**
 ## Installation guide
 ### 1. Clone this repository
