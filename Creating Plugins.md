@@ -59,7 +59,7 @@ function shellPlugin() {
 - **Installing:** Unzip or move your plugin folder into the `Plugins/` directory of the project.
 - **Enabling/Disabling:** Open the **Admin Panel**, scroll down to the **Plugin Manager**, and use the toggle buttons to manage your installed plugins.
 - **Uninstalling:** Simply delete the plugin's folder from the `Plugins/` directory.
-- Check [README](https://github.com/K3Soft-Hard/Raspberry-Pi---Light-Web-Interface/tree/main#plugins) for more informations.
+- Check [README](https://github.com/K3Soft-Hard/Raspberry-Pi---Light-Web-Interface?tab=readme-ov-file#raspberry-pi-light-web-interface) for more informations.
 
 ## Tips for Developers
 - You can use subfolders within your plugin directory to organize scripts, styles, and images.
