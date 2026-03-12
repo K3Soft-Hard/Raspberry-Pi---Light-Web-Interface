@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import os, json, subprocess, time
-from http.server import HTTPServer, SimpleHTTPRequestHandler
+from http.server import HTTPServer, SimpleHTTPRequestHandler, ThreadingHTTPServer
 import datetime
 
 HIDDEN_FILE = 'hidden_plugins.json'
@@ -277,4 +277,5 @@ class MasterHandler(SimpleHTTPRequestHandler):
 
 if __name__ == '__main__':
     print("--- SERVER FULLY REPAIRED ---")
-    HTTPServer(('0.0.0.0', PORT), MasterHandler).serve_forever()
+    # HTTPServer(('0.0.0.0', PORT), MasterHandler).serve_forever()
+    ThreadingHTTPServer(('0.0.0.0', PORT), MasterHandler).serve_forever()
